@@ -2,8 +2,7 @@ from collections import Counter, defaultdict
 import random
 
 class weeklyMenuGenerator:
-    def __init__(self, path, recipeBook) -> None:
-        self.path = path
+    def __init__(self, recipeBook) -> None:
         self.foodList = recipeBook[0]
         self.ingredientRef = recipeBook[1]
         self.ingredientList = recipeBook[2]
@@ -71,12 +70,9 @@ class weeklyMenuGenerator:
         items = dict(Counter(items))
 
         for item in items:
-            try:
-                category = self.ingredientRef[f"{item}"]
-                self.shoppingList[f"{category}"].append(item)
-            except:
-                print(f"Error generating shopping list: {item} not found in database.")
-                pass
+            for category in self.ingredientRef:
+                if item in self.ingredientRef[category]:
+                    self.shoppingList[category].append(item)
     
         # Routine items to check for
         if "White Bread" not in self.shoppingList["Bakery"]:
